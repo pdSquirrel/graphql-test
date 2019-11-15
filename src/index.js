@@ -9,7 +9,6 @@ import resolvers from './resolvers';
 
 import userModel from './models/userModel';
 import postModel from './models/postModel';
-import { on } from 'nodemon';
 
 const app = express();
 app.use(cors());
@@ -32,15 +31,14 @@ const server = new ApolloServer({
   context: async ({ req }) => {
     if (req) {
       const me = await getUser(req);
+      return {
+        me,
+        models: {
+          userModel,
+          postModel
+        }
+      };
     }
-
-    return {
-      me,
-      models: {
-        userModel,
-        postModel
-      }
-    };
   }
 });
 
